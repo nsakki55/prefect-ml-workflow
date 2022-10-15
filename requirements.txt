@@ -1,0 +1,7 @@
+prefect==1.2.0
+dask-cloudprovider[aws]==2022.5.0
+cloudpickle==2.0.0
+boto3==1.17.78
+scikit-learn==1.0.1
+pandas==1.1.4
+numpy==1.19.4

@@ -1,0 +1,53 @@
+system_env = "$SYSTEM_ENV"
+
+# AWS
+task_role_arn = "${aws.${system_env}.task_role_arn}"
+task_execution_role_arn = "${aws.${system_env}.task_execution_role_arn}"
+cluster_arn = "${aws.${system_env}.cluster_arn}"
+vpc = "${aws.${system_env}.vpc}"
+security_groups = "${aws.${system_env}.security_groups}"
+subnets = "${aws.${system_env}.subnets}"
+region = "${aws.${system_env}.region}"
+aws_log_group="${aws.${system_env}.aws_log_group}"
+s3_bucket="${aws.${system_env}.s3_bucket}"
+
+# Docker
+image_name = "${docker.${system_env}.image_name}"
+dockerfile = "${docker.common.dockerfile}"
+ecr_repository = "${docker.common.ecr_repository}"
+
+# Project
+labels = "${project.${system_env}.labels}"
+
+[aws]
+	[aws.production]
+	task_role_arn = "arn:aws:iam::******:role/prefect-task-role"
+	task_execution_role_arn = "arn:aws:iam::******:role/ecsTaskExecutionRole"
+	cluster_arn = "arn:aws:ecs:ap-northeast-1:******:cluster/default"
+	vpc = "vpc-******"
+	security_groups = ["sg-******"]
+	subnets = ["subnet-******"]
+	region = "ap-northeast-1"
+	aws_log_group = "prod-prefect-flow"
+	s3_bucket = "*****"
+
+[docker]
+	[docker.common]
+	ecr_repository = "******.dkr.ecr.ap-northeast-1.amazonaws.com/"
+	dockerfile = "./Dockerfile"
+
+	[docker.develop]
+	image_name = "prefect_introduction/dev-prefect-flow"
+
+	[docker.production]
+	image_name = "prefect_introduction/prod-prefect-flow"
+
+[project]
+	[project.develop]
+	labels = ["develop"]
+
+	[project.production]
+	labels = ["production"]
+
+[context.secrets]
+SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/******"
