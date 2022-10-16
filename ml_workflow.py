@@ -1,4 +1,6 @@
 import prefect
+from prefect import Flow, Parameter
+
 from flow_components import run_name_handler, set_executor, set_run_config, set_schedule, set_storage
 from flow_components.model_entity import DataType, model_info
 from flow_components.task import (
@@ -10,7 +12,6 @@ from flow_components.task import (
     upload_s3_task,
     validate_task,
 )
-from prefect import Flow, Parameter
 
 FLOW_NAME = "ml-workflow"
 
