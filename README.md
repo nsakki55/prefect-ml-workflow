@@ -1,5 +1,7 @@
 # prefect-ml-workflow
-Example of how to build ml training workflow on AWS by Prefect
+Example of how to build ml training workflow on AWS by Prefect  
+Blog(Japanese): [TODO] Add blog url
+
 
 ## Architecture
 ![Architecture](img/ml-workflow-architecture.png)
@@ -45,7 +47,7 @@ $ prefect agent docker start --label develop
 ```
 
 ### ECS Agent
-1. Change the `executionRoleArn`,`taskRoleArn` and `PREFECT__CLOUD__API_KEY` in the `prefect-ecs-agent-task.json` to match your environment.
+1. Change the `executionRoleArn`,`taskRoleArn` and `PREFECT__CLOUD__API_KEY` in the [`prefect-ecs-agent-task.json`](./prefect-ecs-agent-task.json) to match your environment.
 
 
 2. Register ECS Task Definition.
@@ -60,11 +62,11 @@ $ aws ecs create-service \
     --task-definition prefect-ecs-agent-task:1 \
     --desired-count 1 \
     --cluster default \
-    --network-configuration "awsvpcConfiguration={subnets=[subnet-XXXX],securityGroups=[sg-XXXX],assignPublicIp= DISABLED}" \
+    --network-configuration "awsvpcConfiguration={subnets=[subnet-XXXX],securityGroups=[sg-XXXX],assignPublicIp= DISABLED}" 
 ```
 
 ## Setup for registering flow
-1. Change the AWS resource settings in the `config.yaml` to match your environment.
+1. Change the AWS resource settings in the [`config.toml`](./config.toml) to match your environment.
 
 
 2. Auth login to Prefect Cloud. Use your API key.
@@ -73,7 +75,7 @@ $ prefect auth login -k pcs_*****
 Logged in to Prefect Cloud tenant "*****'s Account" (XXXXXXX-s-account)
 ```
 
-3. Export PATH to `PREFECT__USER_CONFIG_PATH` so that Prefect read config.yaml. 
+3. Export PATH to `PREFECT__USER_CONFIG_PATH` so that Prefect read config.toml. 
 ```bash
 $ export PREFECT__USER_CONFIG_PATH="$PWD/config.toml"
 ```
