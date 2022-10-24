@@ -2,6 +2,8 @@ import prefect
 from prefect.run_configs import DockerRun, ECSRun
 from prefect.run_configs.base import RunConfig
 
+from .environment import Environment
+
 
 def ecs_run_config(flow_name: str, cpu: int = 1024, memory: int = 2048) -> RunConfig:
     """Flowを実行するECS Taskの設定"""
@@ -42,11 +44,8 @@ def ecs_run_config(flow_name: str, cpu: int = 1024, memory: int = 2048) -> RunCo
 
 
 def set_run_config(flow_name: str, cpu: int = 1024, memory: int = 2048) -> RunConfig:
-    if prefect.config.system_env == "production":
+    if Environment.from_str(prefect.config.system_env) is Environment.PRODUCTION:
         return ecs_run_config(flow_name=flow_name, cpu=cpu, memory=memory)
 
-    elif prefect.config.system_env == "develop":
+    if Environment.from_str(prefect.config.system_env) is Environment.DEVELOP:
         return DockerRun(image=prefect.config.image_name)
-
-    else:
-        raise ValueError(f"{prefect.config.system_env} is inappropriate environment")

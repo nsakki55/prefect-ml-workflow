@@ -1,6 +1,8 @@
 import prefect
 from prefect.storage import Docker, Storage
 
+from .environment import Environment
+
 
 def docker_storage(image_tag: str) -> Storage:
     """Flowをdocker imageとして管理するための設定"""
@@ -14,7 +16,5 @@ def docker_storage(image_tag: str) -> Storage:
 
 
 def set_storage(image_tag: str = "latest") -> Storage:
-    if prefect.config.system_env in ["production", "develop"]:
+    if Environment.from_str(prefect.config.system_env) in [Environment.PRODUCTION, Environment.DEVELOP]:
         return docker_storage(image_tag=image_tag)
-    else:
-        raise ValueError(f"{prefect.config.system_env} is inappropriate environment")

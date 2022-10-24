@@ -2,6 +2,8 @@ import prefect
 from dask_cloudprovider.aws import FargateCluster
 from prefect.executors import DaskExecutor, Executor, LocalDaskExecutor
 
+from .environment import Environment
+
 
 def fargate_cluster(n_workers: int = 2, cpu: int = 1024, memory: int = 2048) -> FargateCluster:
     """Dask用のFargateCluster作成"""
@@ -28,13 +30,10 @@ def fargate_cluster(n_workers: int = 2, cpu: int = 1024, memory: int = 2048) -> 
 
 
 def set_executor(n_workers: int = 2) -> Executor:
-    if prefect.config.system_env == "production":
+    if Environment.from_str(prefect.config.system_env) is Environment.PRODUCTION:
         return DaskExecutor(
             cluster_class=fargate_cluster,
             cluster_kwargs={"n_workers": n_workers},
         )
-    elif prefect.config.system_env == "develop":
+    if Environment.from_str(prefect.config.system_env) is Environment.DEVELOP:
         return LocalDaskExecutor(n_workers=n_workers)
-
-    else:
-        raise ValueError(f"{prefect.config.system_env} is inappropriate environment")

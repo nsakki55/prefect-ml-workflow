@@ -4,6 +4,8 @@ from prefect.engine.state import Failed, State
 from prefect.utilities.notifications import slack_notifier
 from pytz import timezone
 
+from .environment import Environment
+
 
 def run_name_handler(flow: Flow, old_state: State, new_state: State) -> None:
     """実行Flowの命名規則のハンドラ"""
@@ -18,7 +20,8 @@ def run_name_handler(flow: Flow, old_state: State, new_state: State) -> None:
 
 def notification_handler(state: State = Failed) -> State:
     """Slack通知用のハンドラ"""
-    if prefect.config.system_env == "production":
+    if Environment.from_str(prefect.config.system_env) is Environment.PRODUCTION:
         return [slack_notifier(only_states=[Failed])]
-    else:
+
+    if Environment.from_str(prefect.config.system_env) is Environment.DEVELOP:
         return None
