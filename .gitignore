@@ -1,4 +1,9 @@
 ./data
+./infra/.terraform
 .python-version
 __pycache__
 .mypy_cache
+
+*.tfvars
+*.tfstate
+*.tfstate.backup

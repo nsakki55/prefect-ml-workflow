@@ -1,0 +1,54 @@
+[
+  {
+    "name": "prefect-ecs-agent",
+    "image": "prefecthq/prefect:1.2.0-python3.8",
+    "essential": true,
+    "portMappings": [],
+    "memory": 2048,
+    "cpu": 1024,
+    "environment": [ 
+     {
+        "name": "SYSTEM_ENV",
+        "value": "production"
+      },
+      {
+        "name": "SYSTEM_REGION",
+        "value": "jp"
+      },
+      {
+        "name": "AWS_DEFAULT_REGION",
+        "value": "ap-northeast-1"
+      },
+      {
+        "name": "PREFECT__CLOUD__AGENT__LABELS",
+        "value": "['production']"
+      },
+      {
+        "name": "PREFECT__CLOUD__AGENT__LEVEL",
+        "value": "INFO"
+      },
+      {
+        "name": "PREFECT__CLOUD__API",
+        "value": "https://api.prefect.io"
+      },
+      {
+        "name": "PREFECT__CLOUD__API_KEY",
+        "value": "${prefect_api_key}"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "ecs-agent"
+      }
+    },
+    "command": [
+      "prefect",
+      "agent",
+      "ecs",
+      "start"
+    ]
+  }
+]
