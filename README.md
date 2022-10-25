@@ -48,7 +48,10 @@ $ prefect agent docker start --label develop
 
 ### ECS Agent
 Run ECS Agent on ECS Service.  
-You can use terraform to set up ECS Service hosting ECS Agent. 
+You can use terraform to set up ECS Service hosting ECS Agent.  
+Following commands create below infrastructure.
+![TerraformECSAgent](img/prefect-ecs-agent-terraform.png)
+
 1. Change variable values in [`infra/secrets.tfvars`](./infra/secret.tfvars)
 ```terraform
 access_key      = "*****" # AWS Access Key
@@ -71,7 +74,6 @@ terraform apply -var-file=vars.tfvars
 
 ## Setup for registering flow
 1. Change the AWS resource settings in the [`config.toml`](./config.toml) to match your environment.
-
 
 2. Auth login to Prefect Cloud. Use your API key.
 ```bash
