@@ -47,23 +47,27 @@ $ prefect agent docker start --label develop
 ```
 
 ### ECS Agent
-1. Change the `executionRoleArn`,`taskRoleArn` and `PREFECT__CLOUD__API_KEY` in the [`prefect-ecs-agent-task.json`](./prefect-ecs-agent-task.json) to match your environment.
-
-
-2. Register ECS Task Definition.
-```bash
-$ aws ecs register-task-definition --cli-input-json file://$PWD/prefect-ecs-agent-task.json
+Run ECS Agent on ECS Service.  
+You can use terraform to set up ECS Service hosting ECS Agent. 
+1. Change variable values in [`infra/secrets.tfvars`](./infra/secret.tfvars)
+```terraform
+access_key      = "*****" # AWS Access Key
+secret_key      = "*****" # AWS Secret Key
+region          = "*****" # AWS Region
+prefect_api_key = "*****" # Prefect Cloud API Key
 ```
 
-3. Run ECS Service to host ECS Agent.
+2. Run terraform
 ```bash
-$ aws ecs create-service \
-    --service-name prefect-agent-service \
-    --task-definition prefect-ecs-agent-task:1 \
-    --desired-count 1 \
-    --cluster default \
-    --network-configuration "awsvpcConfiguration={subnets=[subnet-XXXX],securityGroups=[sg-XXXX],assignPublicIp= DISABLED}" 
+cd infra 
 ```
+```bash
+terraform init
+```
+```bash
+terraform apply -var-file=vars.tfvars
+```
+
 
 ## Setup for registering flow
 1. Change the AWS resource settings in the [`config.toml`](./config.toml) to match your environment.
