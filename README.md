@@ -1,6 +1,6 @@
 # prefect-ml-workflow
 Example of how to build ml training workflow on AWS by Prefect  
-Blog(Japanese): [TODO] Add blog url
+Blog(Japanese): https://developers.cyberagent.co.jp/blog/archives/38253/ 
 
 
 ## Architecture
